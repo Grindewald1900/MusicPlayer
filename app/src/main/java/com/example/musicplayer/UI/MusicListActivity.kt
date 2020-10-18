@@ -1,4 +1,4 @@
-package com.example.musicplayer
+package com.example.musicplayer.UI
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.musicplayer.R
 import com.example.musicplayer.data.MusicInfo
 import com.example.musicplayer.tools.MusicAdapter
 import com.example.musicplayer.tools.MusicResolver

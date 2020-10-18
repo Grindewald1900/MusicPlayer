@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.DetailsActivity">
+
+    <ImageView
+        android:id="@+id/detail_img"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/music"
+        android:layout_marginLeft="@dimen/margin_50"
+        android:layout_marginRight="@dimen/margin_50"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <SeekBar
+        android:id="@+id/detail_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_50"
+        android:layout_marginRight="@dimen/margin_50"
+        android:thumb="@drawable/icon_fish"
+        android:progressDrawable="@drawable/seekbar"
+        app:layout_constraintTop_toBottomOf="@id/detail_img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detail_album"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@id/detail_seekbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detail_artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@id/detail_album"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+    <ImageView
+        android:id="@+id/detail_last"
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_20"
+        android:src="@drawable/icon_last"
+        app:layout_constraintTop_toBottomOf="@id/detail_artist"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detail_pause"
+        />
+
+    <ImageView
+        android:id="@+id/detail_pause"
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:src="@drawable/icon_start"
+        app:layout_constraintTop_toTopOf="@id/detail_last"
+        app:layout_constraintLeft_toRightOf="@id/detail_last"
+        app:layout_constraintRight_toLeftOf="@id/detail_next"
+        />
+
+    <ImageView
+        android:id="@+id/detail_next"
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:src="@drawable/iocn_next"
+        app:layout_constraintTop_toTopOf="@id/detail_last"
+        app:layout_constraintLeft_toRightOf="@id/detail_pause"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/detail_volume_down"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+        android:src="@drawable/icon_volume_down"
+        app:layout_constraintTop_toTopOf="@id/detail_volume"
+        app:layout_constraintBottom_toBottomOf="@id/detail_volume"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detail_volume"
+
+    />
+
+    <SeekBar
+        android:id="@+id/detail_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_50"
+        android:layout_marginRight="@dimen/margin_50"
+        android:layout_marginTop="@dimen/margin_20"
+        android:thumb="@drawable/icon_fish"
+        android:progressDrawable="@drawable/seekbar2"
+        app:layout_constraintTop_toBottomOf="@id/detail_last"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/detail_volume_up"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+        android:src="@drawable/icon_volume_up"
+        app:layout_constraintTop_toTopOf="@id/detail_volume"
+        app:layout_constraintBottom_toBottomOf="@id/detail_volume"
+        app:layout_constraintLeft_toRightOf="@id/detail_volume"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

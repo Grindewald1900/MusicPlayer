@@ -7,11 +7,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.example.musicplayer.MusicListActivity;
 import com.example.musicplayer.data.MusicInfo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MusicResolver {
     private static final Uri URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
