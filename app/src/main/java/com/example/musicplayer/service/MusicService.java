@@ -6,7 +6,7 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-public class OnClearService extends Service {
+public class MusicService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent){

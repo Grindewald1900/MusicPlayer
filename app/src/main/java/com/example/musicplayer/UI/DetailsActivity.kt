@@ -11,15 +11,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.musicplayer.R
 import com.example.musicplayer.data.MusicInfo
 import com.example.musicplayer.data.MusicList
-import com.example.musicplayer.service.OnClearService
-import com.example.musicplayer.service.Playable
+import com.example.musicplayer.service.MusicService
 import com.example.musicplayer.tools.CreateNotification
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlin.properties.Delegates
@@ -49,19 +47,19 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            notificationManager.cancelAll()
-//        }
-//        unregisterReceiver(broadcastReceiver)
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            notificationManager.cancelAll()
+        }
+        unregisterReceiver(broadcastReceiver)
+    }
 
     private fun initData(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             createChannel()
-//            registerReceiver(broadcastReceiver, IntentFilter("MUSIC"))
-//            startService(Intent(baseContext, OnClearService::class.java))
+            registerReceiver(broadcastReceiver, IntentFilter("MUSIC"))
+            startService(Intent(baseContext, MusicService::class.java))
         }
 
         mediaPlayer = MediaPlayer()
@@ -122,12 +120,15 @@ class DetailsActivity : AppCompatActivity() {
         detail_pause.setImageResource(R.drawable.icon_pause)
         mediaPlayer.start()
         isPlay = true
+        CreateNotification.createNotification(this, music, R.drawable.icon_pause_24, musicId, MusicList.getInstance().list.size -1)
     }
 
     private fun pauseMusic(){
         detail_pause.setImageResource(R.drawable.icon_start)
         mediaPlayer.pause()
         isPlay = false
+        CreateNotification.createNotification(this, music, R.drawable.icon_start_24, musicId, MusicList.getInstance().list.size -1)
+
     }
 
     private fun playLast(){
@@ -135,7 +136,7 @@ class DetailsActivity : AppCompatActivity() {
         mediaPlayer.reset()
         isPrepared = false
         initView()
-        CreateNotification.createNotification(this, music, R.drawable.icon_pause, musicId, MusicList.getInstance().list.size -1)
+        CreateNotification.createNotification(this, music, R.drawable.icon_pause_24, musicId, MusicList.getInstance().list.size -1)
     }
 
     private fun playNext(){
@@ -143,7 +144,7 @@ class DetailsActivity : AppCompatActivity() {
         mediaPlayer.reset()
         isPrepared = false
         initView()
-        CreateNotification.createNotification(this, music, R.drawable.icon_pause, musicId, MusicList.getInstance().list.size -1)
+        CreateNotification.createNotification(this, music, R.drawable.icon_pause_24, musicId, MusicList.getInstance().list.size -1)
 
     }
 
@@ -178,26 +179,26 @@ class DetailsActivity : AppCompatActivity() {
         }.start()
     }
 
-//    var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context, intent: Intent) {
-//            val action = intent.extras!!.getString("actionname")
-//            when (action) {
-//                CreateNotification.ACTION_LAST -> {
-//                    playLast()
-//                }
-//                CreateNotification.ACTION_PLAY -> {
-//                    if(isPlay){
-//                        pauseMusic()
-//                    }else{
-//                        continueMusic()
-//                    }
-//                }
-//                CreateNotification.ACTION_NEXT -> {
-//                    playNext()
-//                }
-//            }
-//        }
-//    }
+    var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.extras!!.getString("actionname")
+            when (action) {
+                CreateNotification.ACTION_LAST -> {
+                    playLast()
+                }
+                CreateNotification.ACTION_PLAY -> {
+                    if(isPlay){
+                        pauseMusic()
+                    }else{
+                        continueMusic()
+                    }
+                }
+                CreateNotification.ACTION_NEXT -> {
+                    playNext()
+                }
+            }
+        }
+    }
 
     private fun createChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){

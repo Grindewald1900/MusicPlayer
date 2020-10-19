@@ -15,7 +15,7 @@ import com.example.musicplayer.UI.MusicListActivity;
 
 import static android.app.PendingIntent.getActivity;
 
-public class MusicPlayerService extends BroadcastReceiver {
+public class MusicPlayerReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
         context.sendBroadcast(new Intent("MUSIC").putExtra("actionname", intent.getAction()));

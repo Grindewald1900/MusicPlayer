@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <receiver android:name=".service.MusicPlayerService"/>-->
-<!--        <service android:name=".service.OnClearService"/>-->
+        <receiver android:name=".service.MusicPlayerReceiver"/>
+        <service android:name=".service.MusicService"/>
     </application>
 
 </manifest>
