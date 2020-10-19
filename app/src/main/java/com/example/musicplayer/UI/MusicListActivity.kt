@@ -47,6 +47,9 @@ class MusicListActivity : AppCompatActivity(){
     }
 
     private fun initData(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            createChannel()
+        }
         AndPermission.with(this)
             .runtime()
             .permission(Permission.Group.STORAGE)

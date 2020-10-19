@@ -25,19 +25,19 @@ public class MusicPlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         Log.d(TAG, "onStartCommand()");
-        Notification.Builder builder = new Notification.Builder
-        (this.getApplicationContext()); //获取一个Notification构造器
-        Intent nfIntent = new Intent(this, MusicListActivity.class);
-
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, nfIntent, 0)).
-                setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.app_icon)).
-                setContentTitle("下拉列表中的Title").
-                setSmallIcon(R.mipmap.ic_launcher).
-                setContentText("要显示的内容").
-                setWhen(System.currentTimeMillis());
-        Notification notification = builder.build(); // 获取构建好的Notification
-        notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
-        startForeground(110, notification);
+//        Notification.Builder builder = new Notification.Builder
+//        (this.getApplicationContext()); //获取一个Notification构造器
+//        Intent nfIntent = new Intent(this, MusicListActivity.class);
+//
+//        builder.setContentIntent(PendingIntent.getActivity(this, 0, nfIntent, 0)).
+//                setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.app_icon)).
+//                setContentTitle("下拉列表中的Title").
+//                setSmallIcon(R.mipmap.ic_launcher).
+//                setContentText("要显示的内容").
+//                setWhen(System.currentTimeMillis());
+//        Notification notification = builder.build(); // 获取构建好的Notification
+//        notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
+//        startForeground(110, notification);
         return super.onStartCommand(intent, flags, startId);
     }
 
