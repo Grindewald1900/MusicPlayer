@@ -37,16 +37,16 @@ public class MusicResolver {
                 long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
                 String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-                String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                int duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+                String data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+                String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 
                 musicInfo.setId(id);
                 if (!TextUtils.isEmpty(data)) {
                     musicInfo.setData(data);
                 }
-                if (!TextUtils.isEmpty(artist)) {
-                    musicInfo.setData(artist);
+                if (!TextUtils.isEmpty(title)) {
+                    musicInfo.setTitle(title);
                 }
                 if (!TextUtils.isEmpty(album)) {
                     musicInfo.setAlbum(album);
