@@ -1,6 +1,13 @@
 package com.example.musicplayer.UI
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -11,11 +18,15 @@ import com.bumptech.glide.Glide
 import com.example.musicplayer.R
 import com.example.musicplayer.data.MusicInfo
 import com.example.musicplayer.data.MusicList
+import com.example.musicplayer.service.OnClearService
+import com.example.musicplayer.service.Playable
+import com.example.musicplayer.tools.CreateNotification
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlin.properties.Delegates
 
 
 class DetailsActivity : AppCompatActivity() {
+    private lateinit var notificationManager: NotificationManager
     private lateinit var music: MusicInfo
     private var isPlay: Boolean = false
     private lateinit var mediaPlayer: MediaPlayer
@@ -23,10 +34,10 @@ class DetailsActivity : AppCompatActivity() {
     private var isPrepared: Boolean = false
     private var keepUpdate: Boolean = true
     private var currentPosition: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-
         initData()
     }
 
@@ -38,7 +49,21 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//            notificationManager.cancelAll()
+//        }
+//        unregisterReceiver(broadcastReceiver)
+//    }
+
     private fun initData(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            createChannel()
+//            registerReceiver(broadcastReceiver, IntentFilter("MUSIC"))
+//            startService(Intent(baseContext, OnClearService::class.java))
+        }
+
         mediaPlayer = MediaPlayer()
         musicId = intent.getIntExtra("Id", 1)
         Glide.with(this).load(R.drawable.music).placeholder(R.drawable.music).into(detail_img)
@@ -59,17 +84,11 @@ class DetailsActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 var duration: Int = mediaPlayer.duration
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-
             }
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 if (seekBar != null && isPrepared) {
                     mediaPlayer.seekTo(seekBar.progress)
-                    var a: Int = (seekBar.progress * 0.01 * music.duration).toInt()
-                    var b: Int = seekBar.progress
-                    Log.i("skip", a.toString())
                 }
             }
         })
@@ -82,6 +101,7 @@ class DetailsActivity : AppCompatActivity() {
         detail_album.text = music.album
         detail_artist.text = music.artist
         playMusic()
+        CreateNotification.createNotification(this, music, R.drawable.icon_start,1, 309)
     }
 
     private fun playMusic(){
@@ -115,6 +135,7 @@ class DetailsActivity : AppCompatActivity() {
         mediaPlayer.reset()
         isPrepared = false
         initView()
+        CreateNotification.createNotification(this, music, R.drawable.icon_pause, musicId, MusicList.getInstance().list.size -1)
     }
 
     private fun playNext(){
@@ -122,6 +143,8 @@ class DetailsActivity : AppCompatActivity() {
         mediaPlayer.reset()
         isPrepared = false
         initView()
+        CreateNotification.createNotification(this, music, R.drawable.icon_pause, musicId, MusicList.getInstance().list.size -1)
+
     }
 
 
@@ -145,18 +168,45 @@ class DetailsActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
                 currentPosition = mediaPlayer.currentPosition
-
                 val message = Message.obtain()
                 val bundle = Bundle()
                 bundle.putInt("duration", mediaPlayer.duration)
                 bundle.putInt("currentPosition", currentPosition)
                 message.data = bundle
-
                 handler.sendMessage(message)
-
-
             }
         }.start()
+    }
+
+//    var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context, intent: Intent) {
+//            val action = intent.extras!!.getString("actionname")
+//            when (action) {
+//                CreateNotification.ACTION_LAST -> {
+//                    playLast()
+//                }
+//                CreateNotification.ACTION_PLAY -> {
+//                    if(isPlay){
+//                        pauseMusic()
+//                    }else{
+//                        continueMusic()
+//                    }
+//                }
+//                CreateNotification.ACTION_NEXT -> {
+//                    playNext()
+//                }
+//            }
+//        }
+//    }
+
+    private fun createChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            var channel = NotificationChannel("channel", "Music", NotificationManager.IMPORTANCE_HIGH)
+            notificationManager = getSystemService(NotificationManager::class.java)
+            if(notificationManager != null){
+                notificationManager.createNotificationChannel(channel)
+            }
+        }
     }
 
 

@@ -29,7 +29,6 @@ class MusicListActivity : AppCompatActivity(){
     private lateinit var viewAdapter: MusicAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var musicList: ArrayList<MusicInfo>
-    private lateinit var notificationManager: NotificationManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +38,6 @@ class MusicListActivity : AppCompatActivity(){
     }
 
     private fun initView(){
-        var mDivider: DividerItemDecoration = DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
         viewManager = LinearLayoutManager(this)
         recyclerView = findViewById<RecyclerView>(R.id.music_recycler_view)
         recyclerView.layoutManager = viewManager
@@ -47,9 +45,6 @@ class MusicListActivity : AppCompatActivity(){
     }
 
     private fun initData(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            createChannel()
-        }
         AndPermission.with(this)
             .runtime()
             .permission(Permission.Group.STORAGE)
@@ -69,17 +64,8 @@ class MusicListActivity : AppCompatActivity(){
         val intent = Intent(this, DetailsActivity::class.java)
 //        intent.putStringArrayListExtra("musicInfo", musicArray)
         intent.putExtra("Id", musicList.indexOf(musicInfo))
-        CreateNotification.createNotification(this, musicInfo, R.drawable.icon_start,1, musicList.size - 1)
         startActivity(intent)
     }
 
-    private fun createChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            var channel: NotificationChannel  = NotificationChannel("channel0", "Music", NotificationManager.IMPORTANCE_HIGH)
-            notificationManager = getSystemService(NotificationManager::class.java)
-            if(notificationManager != null){
-                notificationManager.createNotificationChannel(channel)
-            }
-        }
-    }
+
 }
